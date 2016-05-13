@@ -3,10 +3,10 @@ __author__ = 'sibirrer'
 import numpy as np
 
 
-from lensDES.lensDES import LensDES
+from easylens.easylens import EasyLens
 
 
-class SED_estimate(LensDES):
+class SED_estimate(EasyLens):
     """
     class to estimate the best fit SED given a source model
     """

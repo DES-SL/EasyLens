@@ -6,8 +6,8 @@ import scipy.ndimage as ndimage
 import scipy.signal as signal
 
 
-from lensDES.FunctionSet.shapelets import Shapelets
-import lensDES.util as util
+from easylens.FunctionSet.shapelets import Shapelets
+import easylens.util as util
 
 
 class DeLens(object):

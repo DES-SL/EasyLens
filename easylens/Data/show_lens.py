@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import AxesGrid, make_axes_locatable
 
-import lensDES.util as util
+import easylens.util as util
 
 
 class ShowLens(object):

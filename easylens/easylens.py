@@ -10,13 +10,13 @@ from __future__ import print_function, division, absolute_import, unicode_litera
 import numpy as np
 
 # lensDES imports
-from lensDES.DeLens.de_lens import DeLens
-from lensDES.DeLens.de_lens_multi_band import DeLensMultiBand
-from lensDES.DeLens.lens_model import LensModel
-import lensDES.util as util
+from easylens.DeLens.de_lens import DeLens
+from easylens.DeLens.de_lens_multi_band import DeLensMultiBand
+from easylens.DeLens.lens_model import LensModel
+import easylens.util as util
 
 
-class LensDES(object):
+class EasyLens(object):
     """
     class to model multi-band SED lenses
     """

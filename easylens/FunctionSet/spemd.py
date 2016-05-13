@@ -2,6 +2,7 @@ __author__ = 'sibirrer'
 
 import numpy as np
 from fastell4py import fastell4py
+#TODO write fastell4py as a requirment
 
 class SPEMD(object):
     """

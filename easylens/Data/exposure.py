@@ -5,8 +5,8 @@ import astropy.io.fits as pyfits
 import astropy.wcs as pywcs
 import numpy as np
 
-from lensDES.Data.image_analysis import ImageAnalysis
-import lensDES.util as util
+from easylens.Data.image_analysis import ImageAnalysis
+import easylens.util as util
 
 class Exposure(object):
     """

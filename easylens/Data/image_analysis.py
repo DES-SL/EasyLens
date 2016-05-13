@@ -5,7 +5,8 @@ import scipy.ndimage.interpolation as interp
 import astropy.io.fits as pyfits
 
 import lenstronomy.DataAnalysis.Sextractor_wrapper.pysex as pysex
-import lensDES.util as util
+#TODO pysex can be put somewhere else on the github
+import easylens.util as util
 
 
 class ImageAnalysis(object):

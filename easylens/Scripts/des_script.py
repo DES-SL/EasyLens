@@ -23,7 +23,7 @@ end_time = time.time()
 #print end_time - start_time, 'time used for initialisation'
 # run the computation
 
-from lensDES.Fitting.mcmc import MCMC_sampler
+from easylens.Fitting.mcmc import MCMC_sampler
 sampler = MCMC_sampler(lensDES, fix_center=False)
 samples = sampler.mcmc_CH(walkerRatio, n_run, n_burn, mean_start, sigma_start, lowerLimit, upperLimit, threadCount=1, init_pos=None, mpi_monch=True)
 # save the output

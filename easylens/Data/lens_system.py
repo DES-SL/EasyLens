@@ -3,7 +3,7 @@ __author__ = 'sibirrer'
 import numpy as np
 import astropy.wcs as pywcs
 
-import lensDES.util as util
+import easylens.util as util
 
 
 class LensSystem(object):

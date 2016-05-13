@@ -1,10 +1,8 @@
 __author__ = 'sibirrer'
 
-from lensDES.FunctionSet.shapelets import Shapelets
-from lensDES.DeLens.de_lens import DeLens
+from easylens.DeLens.de_lens import DeLens
 
 import numpy as np
-import sys
 
 class DeLensMultiExp(DeLens):
     """

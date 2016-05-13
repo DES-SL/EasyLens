@@ -33,6 +33,6 @@ which mpirun
 which python
 
 
-cd /users/sibirrer/Software/LensDES/lensDES/Scripts/
+cd /users/sibirrer/Software/easylens/easylens/Scripts/
 mpirun python des_script.py $'/mnt/lnec/sibirrer/des_input.txt'
 #======END=================================
