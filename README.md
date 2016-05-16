@@ -4,9 +4,9 @@ Enabling simple gravitational lens modeling in the browser using IPython noteboo
 
 For an introduction to the lens modeling library method, check out the [Birrer et al (2015)](http://arxiv.org/abs/1504.07629). EasyLens is an IPython Notebook "worksheet," that walks you through the lens modeling process. All images are assumed to be in *color*, which is to say that images in all available bandpasses are used.
 
-## Try it yourself!
+## [Try it yourself!](https://github.com/DES-SL/EasyLens/blob/master/notebooks/EasyLens%20demo%20worksheet.ipynb)
 
-An IPython Notebook will appear here shortly!
+The above link shows you the example worksheet IPython notebook. To run it, you will need to *fork* this repository, and clone it to your local machine. 
 
 ## Contact
 
