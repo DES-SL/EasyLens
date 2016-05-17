@@ -4,8 +4,7 @@ import numpy as np
 import scipy.ndimage.interpolation as interp
 import astropy.io.fits as pyfits
 
-import lenstronomy.DataAnalysis.Sextractor_wrapper.pysex as pysex
-#TODO pysex can be put somewhere else on the github
+import pyextract.pysex as pysex
 import easylens.util as util
 
 
@@ -65,7 +64,7 @@ class ImageAnalysis(object):
 
         params = ['NUMBER', 'FLAGS', 'X_IMAGE', 'Y_IMAGE', 'FLUX_BEST', 'FLUXERR_BEST', 'MAG_BEST', 'MAGERR_BEST',
                     'FLUX_RADIUS', 'CLASS_STAR', 'A_IMAGE', 'B_IMAGE', 'THETA_IMAGE', 'ELLIPTICITY']
-        HDUFile = pysex.run(image_no_borders, params=params, conf_file=None, conf_args=conf_args, keepcat=False, rerun=False, catdir=None)
+        HDUFile = pysex.run(image=image_no_borders, params=params, conf_file=None, conf_args=conf_args, keepcat=False, rerun=False, catdir=None)
         return HDUFile, image_no_borders
 
     def _get_source_cat(self, HDUFile):
@@ -204,7 +203,7 @@ class ImageAnalysis(object):
             y_shift = int(yc) - yc
             shifted = interp.shift(data, [-y_shift, -x_shift], order=1)
             shifteds.append(shifted)
-            print '=== object ===', i
+            print('=== object ===', i)
             import matplotlib.pylab as plt
             fig, ax1 = plt.subplots()
             im = ax1.matshow(np.log10(shifted), origin='lower')
