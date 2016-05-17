@@ -5,7 +5,7 @@ import scipy.ndimage.interpolation as interp
 import astropy.io.fits as pyfits
 
 import lenstronomy.DataAnalysis.Sextractor_wrapper.pysex as pysex
-#TODO pysex can be put somewhere else on the github
+#TODO pysex can be put somewhere else on the github or remove it
 import easylens.util as util
 
 
