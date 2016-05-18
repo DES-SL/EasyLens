@@ -1,4 +1,6 @@
 astropy
+numpy
 matplotlib
-pyextractor (github/sibirrer)
 cosmohammer
+-e git://github.com/sibirrer/pyextractor.git
+-e git://github.com/sibirrer/fastell4py.git
