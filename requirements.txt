@@ -1,4 +1,5 @@
 astropy
+numpy
 matplotlib
 cosmohammer
 -e git://github.com/sibirrer/pyextractor.git
