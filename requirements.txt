@@ -2,6 +2,6 @@ astropy
 numpy
 matplotlib
 cosmohammer
--e git://github.com/sibirrer/pyextractor.git
--e git://github.com/sibirrer/fastell4py.git
+-e git://github.com/sibirrer/pyextractor.git#egg=pyextractor
+-e git://github.com/sibirrer/fastell4py.git#egg=fastell4py
 bokeh
