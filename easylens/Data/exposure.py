@@ -37,7 +37,7 @@ class Exposure(object):
             y_coords = np.linspace(0, numPix-1, numPix)
             x_coords, y_coords = np.meshgrid(x_coords, y_coords)
             ra_coords, dec_coords = wcs.all_pix2world(x_coords, y_coords, 0)
-            self._ra_coords = util.image2array((ra_coords-self._ra_center)*3600)
+            self._ra_coords = util.image2array((ra_coords-self._ra_center)*3600)*np.cos(self._dec_center/360*2*np.pi)
             self._dec_coords = util.image2array((dec_coords-self._dec_center)*3600)
         else:
             numPix = cutout_pix*2
