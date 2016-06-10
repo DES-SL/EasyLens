@@ -21,7 +21,7 @@ class ImageAnalysis(object):
         :param image: 2d numpy array
         :return: mean and sigma of background estimate
         """
-        HDUFile, _ = self._get_cat(image)
+        HDUFile = self._get_cat(image)
         mean, rms = self._get_background(HDUFile)
         return mean, rms
 
@@ -34,18 +34,17 @@ class ImageAnalysis(object):
         fits = pyfits.open(path2exposure)
         image = fits[0].data
         fits.close()
-        HDUFile, image_no_borders = self._get_cat(image)
-        mean, rms = self._get_background(HDUFile)
+        HDUFile = self._get_cat(image)
         cat = self._get_source_cat(HDUFile)
         if kwargs_cut == {}:
             kwargs_cut = self._estimate_star_thresholds(cat)
         mask = self._find_objects(cat, kwargs_cut)
         mag = np.array(cat.data['MAG_BEST'], dtype=float)
         size = np.array(cat.data['FLUX_RADIUS'], dtype=float)
-        x_list, y_list, restrict_psf = self._get_coordinates(image_no_borders, cat, mask, numPix=41, restrict_psf=restrict_psf)
+        x_list, y_list, restrict_psf = self._get_coordinates(image, cat, mask, numPix=41, restrict_psf=restrict_psf)
         if len(x_list) == 0:
             return np.zeros((kernel_size,kernel_size)), restrict_psf, x_list, y_list, mask, mag, size, kwargs_cut
-        star_list = self._get_objects_image(image_no_borders, x_list, y_list, numPix=41)
+        star_list = self._get_objects_image(image, x_list, y_list, numPix=41)
         kernel = self._stacking(star_list, x_list, y_list)
         kernel =util.cut_edges(kernel, kernel_size)
         kernel = util.kernel_norm(kernel)
@@ -58,14 +57,11 @@ class ImageAnalysis(object):
         :param image_name:
         :return:
         """
-        nx, ny = image.shape
-        borders = int(nx/10)
-        image_no_borders = image[borders:ny-borders,borders:nx-borders]
 
         params = ['NUMBER', 'FLAGS', 'X_IMAGE', 'Y_IMAGE', 'FLUX_BEST', 'FLUXERR_BEST', 'MAG_BEST', 'MAGERR_BEST',
                     'FLUX_RADIUS', 'CLASS_STAR', 'A_IMAGE', 'B_IMAGE', 'THETA_IMAGE', 'ELLIPTICITY']
-        HDUFile = pysex.run(image=image_no_borders, params=params, conf_file=None, conf_args=conf_args, keepcat=False, rerun=False, catdir=None)
-        return HDUFile, image_no_borders
+        HDUFile = pysex.run(image=image, params=params, conf_file=None, conf_args=conf_args, keepcat=False, rerun=False, catdir=None)
+        return HDUFile
 
     def _get_source_cat(self, HDUFile):
         """
@@ -81,6 +77,7 @@ class ImageAnalysis(object):
         :param cat:
         :return: mean, rms
         """
+        mean, rms = 0, 0
         mean_found = False
         rms_found = False
         list = HDUFile[1].data[0][0]

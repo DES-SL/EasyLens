@@ -59,9 +59,9 @@ class LensSystem(object):
 
     def get_coords(self, attrname):
         image_data_obj = getattr(self, attrname)
-        cos_dec = np.cos(self.dec/360*2*np.pi)
+        #cos_dec = np.cos(self.dec/360*2*np.pi)
         ra_coords, dec_coords = image_data_obj.coords
-        return ra_coords*cos_dec, dec_coords
+        return ra_coords, dec_coords
 
     def get_center(self, attrname):
         image_data_obj = getattr(self, attrname)
