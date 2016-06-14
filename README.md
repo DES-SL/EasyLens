@@ -22,5 +22,6 @@ People working on this project:
 * Simon Birrer (ETH Zurich, DES SL: [@sibirrer](https://github.com/DES-SL/RingFinder2/issues/new?body=@sibirrer))
 * Tom Diehl (Fermilab, DES SL)
 * Phil Marshall (KIPAC, DES Space Warps [@drphilmarshall](https://github.com/DES-SL/RingFinder2/issues/new?body=@drphilmarshallt)))
+* Adam Amara (ETH Zurich, DES SL)
 
 
