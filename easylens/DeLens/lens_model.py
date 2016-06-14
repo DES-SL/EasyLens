@@ -10,10 +10,10 @@ class LensModel(object):
     """
     def __init__(self, lens_type):
         if lens_type == 'SIS':
-            from lensDES.FunctionSet.sis import SIS
+            from easylens.FunctionSet.sis import SIS
             self.func = SIS()
         elif lens_type == 'SPEMD':
-            from lensDES.FunctionSet.spemd import SPEMD
+            from easylens.FunctionSet.spemd import SPEMD
             self.func = SPEMD()
         else:
             raise ValueError('lens type %s is not a valid lens model!' % lens_type)
