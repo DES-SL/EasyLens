@@ -66,8 +66,8 @@ class Exposure(object):
         if cutout_pix is None:
             self._weight_map = fits[0].data
         else:
-            weight_map_full = fits[1].data
-            header_full = fits[1].header
+            weight_map_full = fits[0].data
+            header_full = fits[0].header
             self._weight_map, _, _, _ = self.get_cutout(weight_map_full, header_full, cutout_pix)
         fits.close()
 
@@ -183,7 +183,7 @@ class Exposure(object):
         y_coords = np.linspace(ymin, ymax, ymax-ymin)
         x_coords, y_coords = np.meshgrid(x_coords, y_coords)
         ra_coords, dec_coords = wcs.all_pix2world(x_coords, y_coords, 0)
-        ra_coords = util.image2array((ra_coords - self._ra_center)*3600)
+        ra_coords = util.image2array((ra_coords - self._ra_center)*3600)*np.cos(self._dec_center/360*2*np.pi)
         dec_coords = util.image2array((dec_coords - self._dec_center)*3600)
         return xmin, xmax, ymin, ymax, ra_coords, dec_coords
 

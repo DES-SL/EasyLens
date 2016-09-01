@@ -90,11 +90,11 @@ class MCMC_sampler(object):
     """
     class which executes the different sampling  methods
     """
-    def __init__(self, lensDES, fix_center=True):
+    def __init__(self, easyLens, fix_center=True):
         """
         initialise the classes of the chain and for parameter options
         """
-        self.chain = MCMC_chain(lensDES, fix_center)
+        self.chain = MCMC_chain(easyLens, fix_center)
 
     def pso(self, n_particles, n_iterations, lowerLimit, upperLimit, threadCount=1, init_pos=None, mpi_monch=False):
         """
@@ -104,7 +104,7 @@ class MCMC_sampler(object):
             pso = MpiParticleSwarmOptimizer(self.chain, lowerLimit, upperLimit, n_particles, threads=1)
         else:
             pso = ParticleSwarmOptimizer(self.chain, lowerLimit, upperLimit, n_particles, threads=threadCount)
-        if not init_pos == None:
+        if not init_pos is None:
             pso.gbest.position = init_pos
             pso.gbest.velocity = [0]*len(init_pos)
             pso.gbest.fitness, _ = self.chain.likelihood(init_pos)
