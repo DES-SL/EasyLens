@@ -50,15 +50,15 @@ class MCMC_chain(object):
             kwargs_lens["phi_E_sis"] = phi_E
         elif self.lens_type == 'SPEMD':
             if self.fix_center is True:
-                [phi_E, gamma, q, phi_G] = args
+                [phi_E, gamma, e1, e2] = args
             else:
-                [phi_E, gamma, q, phi_G, center_x, center_y] = args
+                [phi_E, gamma, e1, e2, center_x, center_y] = args
                 kwargs_lens['center_x'] = center_x
                 kwargs_lens['center_y'] = center_y
             kwargs_lens['phi_E'] = phi_E
             kwargs_lens['gamma'] = gamma
-            kwargs_lens['q'] = q
-            kwargs_lens['phi_G'] =phi_G
+            kwargs_lens['e1'] = e1
+            kwargs_lens['e2'] =e2
 
         else:
             raise ValueError("Lens type %s is not valid!" % (self.lens_type))

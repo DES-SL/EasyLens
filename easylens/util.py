@@ -166,7 +166,7 @@ def cut_edges(image, numPix):
     """
     nx, ny = image.shape
     if nx < numPix or ny < numPix:
-        print 'WARNING: image can not be resized.'
+        print('WARNING: image can not be resized.')
         return image
     dx = int((nx-numPix)/2)
     dy = int((ny-numPix)/2)
@@ -191,3 +191,15 @@ def rotate(x, y, center_x, center_y, phi_G):
     x1 = cos_phi*x_shift+sin_phi*y_shift
     x2 = -sin_phi*x_shift+cos_phi*y_shift
     return x1, x2
+
+
+def elliptisity2phi_q(e1,e2):
+    """
+    :param e1:
+    :param e2:
+    :return:
+    """
+    phi = np.arctan2(e2, e1)/2
+    c = np.sqrt(e1**2+e2**2)
+    q = (1-c)/(1+c)
+    return phi, q

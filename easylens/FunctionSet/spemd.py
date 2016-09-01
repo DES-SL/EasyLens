@@ -2,7 +2,7 @@ __author__ = 'sibirrer'
 
 import numpy as np
 from fastell4py import fastell4py
-#TODO write fastell4py as a requirment
+import easylens.util as util
 
 class SPEMD(object):
     """
@@ -11,7 +11,8 @@ class SPEMD(object):
     def __init__(self):
         self.s2 = 0.01
 
-    def function(self, x, y, phi_E, gamma, q, phi_G, center_x=0, center_y=0):
+    def function(self, x, y, phi_E, gamma, e1, e2, center_x=0, center_y=0):
+        phi_G, q = util.elliptisity2phi_q(e1, e2)
         if gamma < 1.4:
             gamma = 1.4
         if gamma > 2.9:
@@ -33,7 +34,8 @@ class SPEMD(object):
         potential = fastell4py.ellipphi(x1, x2, q_fastell, gam, arat=q, s2=self.s2)
         return potential
 
-    def derivatives(self, x, y, phi_E, gamma, q, phi_G, center_x=0, center_y=0):
+    def derivatives(self, x, y, phi_E, gamma, e1, e2, center_x=0, center_y=0):
+        phi_G, q = util.elliptisity2phi_q(e1, e2)
         if gamma < 1.4:
             gamma = 1.4
         if gamma > 2.9:
@@ -57,7 +59,8 @@ class SPEMD(object):
         f_y = sin_phi*f_x_prim + cos_phi*f_y_prim
         return f_x, f_y
 
-    def hessian(self, x, y, phi_E, gamma, q, phi_G, center_x=0, center_y=0):
+    def hessian(self, x, y, phi_E, gamma, e1, e2, center_x=0, center_y=0):
+        phi_G, q = util.elliptisity2phi_q(e1, e2)
         if gamma < 1.4:
             gamma = 1.4
         if gamma > 2.9:
@@ -90,7 +93,8 @@ class SPEMD(object):
         f_xy = gamma2
         return f_xx, f_yy, f_xy
 
-    def all(self, x, y, phi_E, gamma, q, phi_G, center_x=0, center_y=0):
+    def all(self, x, y, phi_E, gamma, e1, e2, center_x=0, center_y=0):
+        phi_G, q = util.elliptisity2phi_q(e1, e2)
         if gamma < 1.4:
             gamma = 1.4
         if gamma > 2.9:
