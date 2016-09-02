@@ -22,50 +22,82 @@ class MCMC_chain(object):
     this class contains the routines to run a MCMC process
     """
 
-    def __init__(self, lensDES, fix_center=True):
+    def __init__(self, easyLens, kwargs_fixed={}):
         """
         initializes all the classes needed for the chain
         """
-        self.lensDES = lensDES
-        self.data_vector = self.lensDES.get_data_vector()
-        self.C_D_inv_vector = self.lensDES.get_C_D_inv_vector()
-        self.lens_type = lensDES.lens_type
-        self.fix_center = fix_center
+        self.easyLens = easyLens
+        self.data_vector = self.easyLens.get_data_vector()
+        self.C_D_inv_vector = self.easyLens.get_C_D_inv_vector()
+        self.lens_type = easyLens.lens_type
+        self.kwargs_fixed = kwargs_fixed
+
+    def sort_param(self, args):
+        """
+        sorts the parameters in the array into a kwargs list
+        :param args:
+        :return:
+        """
+        kwargs_lens = self.easyLens.get_lens()
+
+        # extract parameters
+        i = 0
+        if self.lens_type == 'SIS' or self.lens_type == 'SPEMD' or self.lens_type == 'SPEMD_ext':
+            if not "phi_E" in self.kwargs_fixed:
+                kwargs_lens["phi_E"] = args[i]
+                i += 1
+            else:
+                kwargs_lens["phi_E"] = self.kwargs_fixed["phi_E"]
+            if not "center_x" in self.kwargs_fixed:
+                kwargs_lens["center_x"] = args[i]
+                i += 1
+            else:
+                kwargs_lens["center_x"] = self.kwargs_fixed["center_x"]
+            if not "center_y" in self.kwargs_fixed:
+                kwargs_lens["center_y"] = args[i]
+                i += 1
+            else:
+                kwargs_lens["center_y"] = self.kwargs_fixed["center_y"]
+
+        if self.lens_type == 'SPEMD' or self.lens_type == 'SPEMD_ext':
+            if not "gamma" in self.kwargs_fixed:
+                kwargs_lens["gamma"] = args[i]
+                i += 1
+            else:
+                kwargs_lens["gamma"] = self.kwargs_fixed["gamma"]
+            if not "e1" in self.kwargs_fixed:
+                kwargs_lens["e1"] = args[i]
+                i += 1
+            else:
+                kwargs_lens["e1"] = self.kwargs_fixed["e1"]
+            if not "e2" in self.kwargs_fixed:
+                kwargs_lens["e2"] = args[i]
+                i += 1
+            else:
+                kwargs_lens["e2"] = self.kwargs_fixed["e2"]
+        if self.lens_type == 'SPEMD_ext':
+            if not "e1_ext" in self.kwargs_fixed:
+                kwargs_lens["e1_ext"] = args[i]
+                i += 1
+            else:
+                kwargs_lens["e1_ext"] = self.kwargs_fixed["e1_ext"]
+            if not "e2" in self.kwargs_fixed:
+                kwargs_lens["e2_ext"] = args[i]
+                i += 1
+            else:
+                kwargs_lens["e2_ext"] = self.kwargs_fixed["e2_ext"]
+
+        return kwargs_lens
 
     def X2_chain(self, args):
         """
         routine to compute X2 given variable parameters for a MCMC/PSO chainF
         """
-        kwargs_lens = self.lensDES.get_lens()
-
-        #extract parameters
-        if self.lens_type == 'SIS':
-            if self.fix_center is True:
-                [phi_E] = args
-            else:
-                [phi_E, center_x, center_y] = args
-                kwargs_lens["center_x_sis"] = center_x
-                kwargs_lens["center_y_sis"] = center_y
-            # update lensDES
-            kwargs_lens["phi_E_sis"] = phi_E
-        elif self.lens_type == 'SPEMD':
-            if self.fix_center is True:
-                [phi_E, gamma, e1, e2] = args
-            else:
-                [phi_E, gamma, e1, e2, center_x, center_y] = args
-                kwargs_lens['center_x'] = center_x
-                kwargs_lens['center_y'] = center_y
-            kwargs_lens['phi_E'] = phi_E
-            kwargs_lens['gamma'] = gamma
-            kwargs_lens['e1'] = e1
-            kwargs_lens['e2'] =e2
-
-        else:
-            raise ValueError("Lens type %s is not valid!" % (self.lens_type))
-        self.lensDES.add_lens(kwargs_lens, print_statement=False)
+        kwargs_lens = self.sort_param(args)
+        self.easyLens.add_lens(kwargs_lens, print_statement=False)
         # generate image
-        A = self.lensDES.get_response()
-        param_array, model_array = self.lensDES.get_inverted(A, self.C_D_inv_vector, self.data_vector)
+        A = self.easyLens.get_response()
+        param_array, model_array = self.easyLens.get_inverted(A, self.C_D_inv_vector, self.data_vector)
 
         # compute X^2
         chi2 = np.sum((model_array-self.data_vector)**2*self.C_D_inv_vector)
@@ -90,11 +122,11 @@ class MCMC_sampler(object):
     """
     class which executes the different sampling  methods
     """
-    def __init__(self, easyLens, fix_center=True):
+    def __init__(self, easyLens, kwargs_fixed={}):
         """
         initialise the classes of the chain and for parameter options
         """
-        self.chain = MCMC_chain(easyLens, fix_center)
+        self.chain = MCMC_chain(easyLens, kwargs_fixed=kwargs_fixed)
 
     def pso(self, n_particles, n_iterations, lowerLimit, upperLimit, threadCount=1, init_pos=None, mpi_monch=False):
         """
@@ -123,7 +155,7 @@ class MCMC_sampler(object):
         else:
             result = pso.gbest.position
         if pso.isMaster() and mpi_monch is True:
-            print(pso.gbest.fitness*2/(self.chain.lensDES.get_pixels_unmasked()), 'reduced X^2 of best position')
+            print(pso.gbest.fitness*2/(self.chain.easyLens.get_pixels_unmasked()), 'reduced X^2 of best position')
             print(result, 'result')
             time_end = time.time()
             print(time_end - time_start, 'time used for PSO')

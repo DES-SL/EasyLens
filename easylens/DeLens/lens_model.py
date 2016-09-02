@@ -15,6 +15,9 @@ class LensModel(object):
         elif lens_type == 'SPEMD':
             from easylens.FunctionSet.spemd import SPEMD
             self.func = SPEMD()
+        elif lens_type == 'SPEMD_ext':
+            from easylens.FunctionSet.spemd import SPEMD_ext
+            self.func = SPEMD_ext()
         else:
             raise ValueError('lens type %s is not a valid lens model!' % lens_type)
 

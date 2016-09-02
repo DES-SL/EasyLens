@@ -3,6 +3,7 @@ __author__ = 'sibirrer'
 import numpy as np
 from fastell4py import fastell4py
 import easylens.util as util
+from easylens.FunctionSet.external_shear import ExternalShear
 
 class SPEMD(object):
     """
@@ -13,8 +14,8 @@ class SPEMD(object):
 
     def function(self, x, y, phi_E, gamma, e1, e2, center_x=0, center_y=0):
         phi_G, q = util.elliptisity2phi_q(e1, e2)
-        if gamma < 1.4:
-            gamma = 1.4
+        if gamma < 1.0:
+            gamma = 1.0
         if gamma > 2.9:
             gamma = 2.9
         if q < 0.3:
@@ -36,8 +37,8 @@ class SPEMD(object):
 
     def derivatives(self, x, y, phi_E, gamma, e1, e2, center_x=0, center_y=0):
         phi_G, q = util.elliptisity2phi_q(e1, e2)
-        if gamma < 1.4:
-            gamma = 1.4
+        if gamma < 1.0:
+            gamma = 1.0
         if gamma > 2.9:
             gamma = 2.9
         if q < 0.3:
@@ -61,8 +62,8 @@ class SPEMD(object):
 
     def hessian(self, x, y, phi_E, gamma, e1, e2, center_x=0, center_y=0):
         phi_G, q = util.elliptisity2phi_q(e1, e2)
-        if gamma < 1.4:
-            gamma = 1.4
+        if gamma < 1.0:
+            gamma = 1.0
         if gamma > 2.9:
             gamma = 2.9
         if q < 0.3:
@@ -95,8 +96,8 @@ class SPEMD(object):
 
     def all(self, x, y, phi_E, gamma, e1, e2, center_x=0, center_y=0):
         phi_G, q = util.elliptisity2phi_q(e1, e2)
-        if gamma < 1.4:
-            gamma = 1.4
+        if gamma < 1.0:
+            gamma = 1.0
         if gamma > 2.9:
             gamma = 2.9
         if q < 0.3:
@@ -141,3 +142,48 @@ class SPEMD(object):
         # gam = gamma
         q_fastell = (3-gamma)/2. * (phi_E**2/q)**gam
         return q_fastell, gam
+
+
+class SPEMD_ext(object):
+    """
+    class for external shear SPEMD model
+    """
+    def __init__(self):
+        self.SPEMD = SPEMD()
+        self.ext_shear = ExternalShear()
+
+    def function(self, x, y, phi_E, gamma, e1, e2, e1_ext, e2_ext, center_x=0, center_y=0):
+        f_spemd = self.SPEMD.function(x, y, phi_E, gamma, e1, e2, center_x, center_y)
+        f_ext = self.ext_shear.function(x, y, e1_ext, e2_ext)
+        f_ = f_spemd + f_ext
+        return f_
+
+    def derivatives(self, x, y, phi_E, gamma, e1, e2, e1_ext, e2_ext, center_x=0, center_y=0):
+        f_x_spemd, f_y_spemd = self.SPEMD.derivatives(x, y, phi_E, gamma, e1, e2, center_x, center_y)
+        f_x_shear, f_y_shear = self.ext_shear.derivatives(x, y, e1_ext, e2_ext)
+        f_x = f_x_spemd + f_x_shear
+        f_y = f_y_spemd + f_y_shear
+        return f_x, f_y
+
+    def hessian(self, x, y, phi_E, gamma, e1, e2, e1_ext, e2_ext, center_x=0, center_y=0):
+        f_xx_spemd, f_yy_spemd, f_xy_spemd = self.SPEMD.hessian(x, y, phi_E, gamma, e1, e2, center_x, center_y)
+        f_xx_shear, f_yy_shear, f_xy_shear = self.ext_shear.hessian(x, y, e1_ext, e2_ext)
+        f_xx = f_xx_spemd + f_xx_shear
+        f_yy = f_yy_spemd + f_yy_shear
+        f_xy = f_xy_spemd + f_xy_shear
+        return f_xx, f_yy, f_xy
+
+    def all(self, x, y, phi_E, gamma, e1, e2, e1_ext, e2_ext, center_x=0, center_y=0):
+        f_spemd = self.SPEMD.function(x, y, phi_E, gamma, e1, e2, center_x, center_y)
+        f_ext = self.ext_shear.function(x, y, e1_ext, e2_ext)
+        f_ = f_spemd + f_ext
+        f_x_spemd, f_y_spemd = self.SPEMD.derivatives(x, y, phi_E, gamma, e1, e2, center_x, center_y)
+        f_x_shear, f_y_shear = self.ext_shear.derivatives(x, y, e1_ext, e2_ext)
+        f_x = f_x_spemd + f_x_shear
+        f_y = f_y_spemd + f_y_shear
+        f_xx_spemd, f_yy_spemd, f_xy_spemd = self.SPEMD.hessian(x, y, phi_E, gamma, e1, e2, center_x, center_y)
+        f_xx_shear, f_yy_shear, f_xy_shear = self.ext_shear.hessian(x, y, e1_ext, e2_ext)
+        f_xx = f_xx_spemd + f_xx_shear
+        f_yy = f_yy_spemd + f_yy_shear
+        f_xy = f_xy_spemd + f_xy_shear
+        return f_, f_x, f_y, f_xx, f_yy, f_xy
