@@ -1,8 +1,7 @@
 __author__ = 'sibirrer'
 
-import lenstronomy.util as util
+import easylens.util as util
 import numpy as np
-
 
 class ExternalShear(object):
     """

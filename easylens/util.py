@@ -193,7 +193,36 @@ def rotate(x, y, center_x, center_y, phi_G):
     return x1, x2
 
 
-def elliptisity2phi_q(e1,e2):
+def ellipticity2phi_gamma(e1, e2):
+    """
+    :param e1:
+    :param e2:
+    :return:
+    """
+    phi = np.arctan2(e2, e1)/2
+    gamma = np.sqrt(e1**2+e2**2)
+    return phi, gamma
+
+
+def cart2polar(x, y, center=np.array([0, 0])):
+    """
+	transforms cartesian coords [x,y] into polar coords [r,phi] in the frame of the lense center
+
+	:param coord: set of coordinates
+	:type coord: array of size (n,2)
+	:param center: rotation point
+	:type center: array of size (2)
+	:returns:  array of same size with coords [r,phi]
+	:raises: AttributeError, KeyError
+	"""
+    coordShift_x = x - center[0]
+    coordShift_y = y - center[1]
+    r = np.sqrt(coordShift_x**2+coordShift_y**2)
+    phi = np.arctan2(coordShift_y, coordShift_x)
+    return r, phi
+
+
+def ellipticity2phi_q(e1,e2):
     """
     :param e1:
     :param e2:
