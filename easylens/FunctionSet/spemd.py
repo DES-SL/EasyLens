@@ -13,7 +13,7 @@ class SPEMD(object):
         self.s2 = 0.01
 
     def function(self, x, y, phi_E, gamma, e1, e2, center_x=0, center_y=0):
-        phi_G, q = util.elliptisity2phi_q(e1, e2)
+        phi_G, q = util.ellipticity2phi_q(e1, e2)
         if gamma < 1.0:
             gamma = 1.0
         if gamma > 2.9:
@@ -36,7 +36,7 @@ class SPEMD(object):
         return potential
 
     def derivatives(self, x, y, phi_E, gamma, e1, e2, center_x=0, center_y=0):
-        phi_G, q = util.elliptisity2phi_q(e1, e2)
+        phi_G, q = util.ellipticity2phi_q(e1, e2)
         if gamma < 1.0:
             gamma = 1.0
         if gamma > 2.9:
@@ -61,7 +61,7 @@ class SPEMD(object):
         return f_x, f_y
 
     def hessian(self, x, y, phi_E, gamma, e1, e2, center_x=0, center_y=0):
-        phi_G, q = util.elliptisity2phi_q(e1, e2)
+        phi_G, q = util.ellipticity2phi_q(e1, e2)
         if gamma < 1.0:
             gamma = 1.0
         if gamma > 2.9:
@@ -95,7 +95,7 @@ class SPEMD(object):
         return f_xx, f_yy, f_xy
 
     def all(self, x, y, phi_E, gamma, e1, e2, center_x=0, center_y=0):
-        phi_G, q = util.elliptisity2phi_q(e1, e2)
+        phi_G, q = util.ellipticity2phi_q(e1, e2)
         if gamma < 1.0:
             gamma = 1.0
         if gamma > 2.9:
