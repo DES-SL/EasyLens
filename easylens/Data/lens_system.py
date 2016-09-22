@@ -92,6 +92,27 @@ class LensSystem(object):
             x_pos, y_pos = wcs.wcs_world2pix(ra_pos/3600. + ra_c, dec_pos/3600. + dec_c, 0)
         return x_pos, y_pos
 
+    def get_angle_coord(self, attrname, x_coord, y_coord, relative=True):
+        """
+        returns the (relative) ra, dec coordinate of a image pixel
+        :param attrname: name of filter
+        :param x_coord: x-axis pixel
+        :param y_coord: y-axis pixel
+        :param relative: bool, indicate wheterh relative coords or absolut
+        :return: ra, dec
+        """
+        image_data_obj = getattr(self, attrname)
+        head = image_data_obj.header
+        wcs = pywcs.WCS(head)
+        ra_c, dec_c = self.get_center(attrname)
+        ra_pos, dec_pos = wcs.wcs_pix2world(x_coord, y_coord, 0)
+        if relative is True:
+            cos_dec = np.cos(dec_c / 360. * 2 * np.pi)
+            ra_pos -= ra_c
+            ra_pos *= cos_dec
+            dec_pos -= dec_c
+        return ra_pos, dec_pos
+
     def get_sed_estimate(self, ra_pos, dec_pos):
         """
         returns an estimate of an SED at a given position
