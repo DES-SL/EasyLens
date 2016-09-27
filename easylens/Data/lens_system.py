@@ -111,6 +111,9 @@ class LensSystem(object):
             ra_pos -= ra_c
             ra_pos *= cos_dec
             dec_pos -= dec_c
+            arcsec = 2*np.pi/360/3600
+            ra_pos /= arcsec
+            dec_pos /= arcsec
         return ra_pos, dec_pos
 
     def get_sed_estimate(self, ra_pos, dec_pos):
