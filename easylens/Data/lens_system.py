@@ -98,7 +98,7 @@ class LensSystem(object):
         :param attrname: name of filter
         :param x_coord: x-axis pixel
         :param y_coord: y-axis pixel
-        :param relative: bool, indicate wheterh relative coords or absolut
+        :param relative: bool, indicate wheterh relative coords or absolute
         :return: ra, dec
         """
         image_data_obj = getattr(self, attrname)
@@ -111,7 +111,7 @@ class LensSystem(object):
             ra_pos -= ra_c
             ra_pos *= cos_dec
             dec_pos -= dec_c
-            arcsec = 2*np.pi/360/3600
+            arcsec = 2.*np.pi/360/3600
             ra_pos /= arcsec
             dec_pos /= arcsec
         return ra_pos, dec_pos
