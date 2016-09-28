@@ -122,6 +122,42 @@ class ShowLens(object):
         plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=+0.25, hspace=0.05)
         return f, axes
 
+    def show_single(self, i, kwargs_mask=None):
+        """
+        plots the psf models for all the frames
+        :return:
+        """
+        f, axes = plt.subplots(1, 1, figsize=(5, 5), sharex=False, sharey=False)
+        ax = axes
+        frame = self.lensSystem.available_frames[i-1]
+        image = self.lensSystem.get_image(frame)
+        deltaPix = self.lensSystem.get_deltaPix(frame)
+        numPix = self.lensSystem.get_numPix(frame)
+        mask = self.lensSystem.get_mask_frame(kwargs_mask, frame)
+        try:
+            mask = util.array2image(mask)
+        except:
+            mask = 1
+        im = ax.matshow(np.log10(image*mask), origin='lower')#, extent=[0, deltaPix*numPix, 0, deltaPix*numPix])
+        ax.autoscale(False)
+        ax.get_xaxis().set_visible(False)
+        ax.get_yaxis().set_visible(False)
+        delta = 5./deltaPix
+        ax.plot([1, 1+delta], [1, 1], linewidth=3, color='k')
+        ax.plot([1, 1], [1, 1+delta], linewidth=3, color='k')
+        ax.text(2, 2, '5"', fontsize=25)
+        ax.text(0.1, 0.85,  frame,
+            verticalalignment='bottom', horizontalalignment='left',
+            transform=ax.transAxes, fontsize=30)
+        divider = make_axes_locatable(ax)
+        cax = divider.append_axes("right", size="5%", pad=0.05)
+        plt.colorbar(im, cax=cax)
+
+        f.tight_layout()
+        plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=+0.25, hspace=0.05)
+        return f, axes
+
+
     def show_pixel_hist(self, bins=100):
         """
 
