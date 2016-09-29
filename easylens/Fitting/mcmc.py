@@ -81,7 +81,7 @@ class MCMC_chain(object):
                 i += 1
             else:
                 kwargs_lens["e1_ext"] = self.kwargs_fixed["e1_ext"]
-            if not "e2" in self.kwargs_fixed:
+            if not "e2_ext" in self.kwargs_fixed:
                 kwargs_lens["e2_ext"] = args[i]
                 i += 1
             else:
