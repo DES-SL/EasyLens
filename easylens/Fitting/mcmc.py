@@ -234,5 +234,5 @@ class MCMC_sampler(object):
         except Exception as ex:
             print(ex)
             pass
-        return store.samples
+        return store.samples, store.prob
 
