@@ -240,5 +240,7 @@ def replace_nan(a, value=0):
     :param a: numpy array
     :return: a[a==Nan] = value
     """
+    if np.isnan(np.sum(a)):
+        print("Warning!!! Array contains nan's! Overwritten with nan=%s.", (value))
     a[np.isnan(a)] = value
     return a
