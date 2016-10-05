@@ -26,6 +26,7 @@ class Exposure(object):
         """
         fits = pyfits.open(path2exposure_fits)
         image_full = fits[0].data
+        image_full = util.replace_nan(image_full)
         self._header_full = fits[0].header
         fits.close()
         if cutout_pix is None:
@@ -54,7 +55,8 @@ class Exposure(object):
         :param path2psf: path to psf file
         :return:
         """
-        self._psf = pyfits.open(path2psf)[0].data
+        psf = pyfits.open(path2psf)[0].data
+        self._psf = util.replace_nan(psf)
 
     def load_weight_map(self, path2weight, cutout_pix=None):
         """
@@ -68,7 +70,8 @@ class Exposure(object):
         else:
             weight_map_full = fits[0].data
             header_full = fits[0].header
-            self._weight_map, _, _, _ = self.get_cutout(weight_map_full, header_full, cutout_pix)
+            weight_map, _, _, _ = self.get_cutout(weight_map_full, header_full, cutout_pix)
+            self._weight_map = util.replace_nan(weight_map)
         fits.close()
 
     def load_all(self, path2exposure_fits, path2psf, path2weight, cutout_pix=None):
@@ -82,7 +85,7 @@ class Exposure(object):
         self.load_exposure(path2exposure_fits, cutout_pix=cutout_pix)
         if path2psf == path2exposure_fits:
             kernel, restrict_psf, x_list, y_list, mask, mag, size, kwargs_cut = self.analysis.estimate_psf(path2exposure_fits)
-            self._psf = kernel
+            self._psf = util.replace_nan(kernel)
         else:
             self.load_psf(path2psf)
         self.load_weight_map(path2weight, cutout_pix=cutout_pix)
