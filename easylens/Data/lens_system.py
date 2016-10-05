@@ -92,12 +92,13 @@ class LensSystem(object):
             x_pos, y_pos = wcs.wcs_world2pix(ra_pos/3600. + ra_c, dec_pos/3600. + dec_c, 0)
         return x_pos, y_pos
 
-    def get_angle_coord(self, attrname, x_coord, y_coord, relative=True):
+    def get_angle_coord(self, attrname, x_coord, y_coord, relative=True, deg=True):
         """
         returns the (relative) ra, dec coordinate of a image pixel
         :param attrname: name of filter
         :param x_coord: x-axis pixel
         :param y_coord: y-axis pixel
+        :param deg: bool, image data in sec. If False: image in arcsec
         :param relative: bool, indicate wheterh relative coords or absolute
         :return: ra, dec
         """
@@ -111,9 +112,11 @@ class LensSystem(object):
             ra_pos -= ra_c
             ra_pos *= cos_dec
             dec_pos -= dec_c
-            arcsec = 1./3600
-            ra_pos /= arcsec
-            dec_pos /= arcsec
+            sec = 1./3600
+            if deg==False:
+                sec *= 2* np.pi / 360
+            ra_pos /= sec
+            dec_pos /= sec
         return ra_pos, dec_pos
 
     def get_sed_estimate(self, ra_pos, dec_pos):
@@ -148,6 +151,25 @@ class LensSystem(object):
             num_pix += np.sum(mask_f)
             mask[frame] = mask_f
         return mask, num_pix
+
+    def add_mask(self, kwargs_mask,mask,num_pix):
+        """
+        adds new mask to existing one
+        :param kwargs_mask:
+        :return:
+        """
+
+        num_frames = self.num_frames
+        for i in range(num_frames):
+            frame = self.available_frames[i]
+            mask_f = self.get_mask_frame(kwargs_mask, frame)
+            num_pix += np.sum(mask_f)
+            mask[frame]+= mask_f
+            for j in range(len(mask[frame])):
+                if mask[frame][j] > 0:
+                    mask[frame][j] = 1
+        return mask, num_pix
+
 
     def get_mask_frame(self, kwargs_mask, frame):
         """
