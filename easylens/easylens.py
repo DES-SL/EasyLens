@@ -273,11 +273,13 @@ class EasyLens(object):
             de_convolve_list.append(de_convolve_frame)
         return de_convolve_list
 
-    def get_sources_original(self, param_array, frame):
+    def get_sources_original(self, param_array, frame, scale=1):
         """
         returns the different SED sources separately for one given frame of choice
         """
         ra_grid, dec_grid = self.system.get_coords(frame)
+        ra_grid *= scale
+        dec_grid *= scale
         mask = self.mask_frames[frame]
         num_param_list = self.get_num_param_list()
         source_list = []
