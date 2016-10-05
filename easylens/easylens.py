@@ -96,7 +96,13 @@ class EasyLens(object):
         :param kwargs_mask: keyword arguments for mask
         :return:
         """
-        self.mask_frames, self._num_pix_effective = self.system.get_mask(kwargs_mask)
+        if type(kwargs_mask)==dict:
+            self.mask_frames, self._num_pix_effective = self.system.get_mask(kwargs_mask)
+        else:
+            self.mask_frames, self._num_pix_effective = self.system.get_mask(kwargs_mask[0])
+            for i in range(len(kwargs_mask)-1):
+                self.mask_frames, self._num_pix_effective = self.system.add_mask(kwargs_mask[i+1],self.mask_frames,
+                                                                                 self._num_pix_effective)
 
     def get_pixels_unmasked(self):
         """
