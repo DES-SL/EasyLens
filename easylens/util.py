@@ -232,3 +232,13 @@ def ellipticity2phi_q(e1,e2):
     c = np.sqrt(e1**2+e2**2)
     q = (1-c)/(1+c)
     return phi, q
+
+
+def replace_nan(a, value=0):
+    """
+    replaces entries of of a with Nan to 0
+    :param a: numpy array
+    :return: a[a==Nan] = value
+    """
+    a[np.isnan(a)] = value
+    return a
