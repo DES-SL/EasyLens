@@ -63,7 +63,7 @@ class ShowLens(object):
         plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=+0.25, hspace=0.05)
         return f, axes
 
-    def show_list(self, model_list, frame_list):
+    def show_list(self, model_list, frame_list, cmin=None, cmax=None):
         """
         plots all the available frames
         :return:
@@ -79,7 +79,7 @@ class ShowLens(object):
             image = util.array2image(model_list[i])
             deltaPix = self.lensSystem.get_deltaPix(frame)
             numPix = self.lensSystem.get_numPix(frame)
-            im = ax.matshow(image, origin='lower', extent=[0, deltaPix*numPix, 0, deltaPix*numPix])
+            im = ax.matshow(image, origin='lower', extent=[0, deltaPix*numPix, 0, deltaPix*numPix], vmin=cmin, vmax=cmax)
             ax.get_xaxis().set_visible(False)
             ax.get_yaxis().set_visible(False)
             ax.autoscale(False)
