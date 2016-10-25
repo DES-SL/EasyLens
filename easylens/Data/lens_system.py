@@ -87,9 +87,9 @@ class LensSystem(object):
         ra_c, dec_c = self.get_center(attrname)
         if relative is True:
             cos_dec = np.cos(dec_c/360.*2*np.pi)
-            x_pos, y_pos = wcs.wcs_world2pix(ra_pos/cos_dec/3600. + ra_c, dec_pos/3600. + dec_c, 0)
+            x_pos, y_pos = wcs.all_world2pix(ra_pos/cos_dec/3600. + ra_c, dec_pos/3600. + dec_c, 0)
         else:
-            x_pos, y_pos = wcs.wcs_world2pix(ra_pos/3600. + ra_c, dec_pos/3600. + dec_c, 0)
+            x_pos, y_pos = wcs.all_world2pix(ra_pos/3600. + ra_c, dec_pos/3600. + dec_c, 0)
         return x_pos, y_pos
 
     def get_angle_coord(self, attrname, x_coord, y_coord, relative=True, deg=True):
