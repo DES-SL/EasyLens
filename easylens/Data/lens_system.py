@@ -106,7 +106,7 @@ class LensSystem(object):
         head = image_data_obj.header
         wcs = pywcs.WCS(head)
         ra_c, dec_c = self.get_center(attrname)
-        ra_pos, dec_pos = wcs.wcs_pix2world(x_coord, y_coord, 0)
+        ra_pos, dec_pos = wcs.all_pix2world(x_coord, y_coord, 0)
         if relative is True:
             cos_dec = np.cos(dec_c / 360. * 2 * np.pi)
             ra_pos -= ra_c

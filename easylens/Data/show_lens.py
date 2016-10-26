@@ -30,7 +30,10 @@ class ShowLens(object):
             plot_point = False
         f, axes = plt.subplots(1, self.lensSystem.num_frames, figsize=(5*self.lensSystem.num_frames, 5), sharex=False, sharey=False)
         for i in range(self.lensSystem.num_frames):
-            ax = axes[i]
+            if self.lensSystem.num_frames == 1:
+                ax = axes
+            else:
+                ax = axes[i]
             frame = self.lensSystem.available_frames[i]
             image = self.lensSystem.get_image(frame)
             deltaPix = self.lensSystem.get_deltaPix(frame)
@@ -111,7 +114,7 @@ class ShowLens(object):
             frame = self.lensSystem.available_frames[i]
             psf = self.lensSystem.get_psf_kwargs(frame)['kernel']
 
-            im = ax.matshow(psf, origin='lower')
+            im = ax.matshow(np.log10(psf), origin='lower')
             divider = make_axes_locatable(ax)
             cax = divider.append_axes("right", size="5%", pad=0.05)
             plt.colorbar(im, cax=cax)
@@ -165,7 +168,10 @@ class ShowLens(object):
         """
         f, axes = plt.subplots(1, self.lensSystem.num_frames, figsize=(5*self.lensSystem.num_frames, 5), sharex=False, sharey=False)
         for i in range(self.lensSystem.num_frames):
-            ax = axes[i]
+            if self.lensSystem.num_frames==1:
+                ax = axes
+            else:
+                ax = axes[i]
             frame = self.lensSystem.available_frames[i]
             image = util.image2array(self.lensSystem.get_image(frame))
             deltaPix = self.lensSystem.get_deltaPix(frame)
