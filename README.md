@@ -12,6 +12,7 @@ The above link shows you the example worksheet IPython notebook. To run it, you 
 python setup.py install
 ```
 in a terminal window, from the top level directory. This will put all the EasyLens python code on your PYTHONPATH.
+macOS-users: Possible error with the installation of fastell4py. Make sure, gcc is linked with the full gcc Compiler (not clang, e.g. gcc6 via MacPorts): Try ```port select --list gcc``` and ```sudo port select --set gcc <gcc-to-be-selected>``
 
 ## Contact
 
@@ -23,4 +24,4 @@ People working on this project:
 * Tom Diehl (Fermilab, DES SL)
 * Phil Marshall (KIPAC, DES Space Warps [@drphilmarshall](https://github.com/DES-SL/RingFinder2/issues/new?body=@drphilmarshallt)))
 * Adam Amara (ETH Zurich, DES SL)
-* Felix A. Kuhn (ETH Zurich, (https://github.com/kuhnfe))
+* Felix A. Kuhn (ETH Zurich, [@kuhnfe](https://github.com/DES-SL/EasyLens/issues/new?/body=@kuhnfe))
