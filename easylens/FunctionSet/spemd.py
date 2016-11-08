@@ -48,7 +48,6 @@ class SPEMD(object):
         x_shift = x - center_x
         y_shift = y - center_y
         q_fastell, gam = self.convert_params(phi_E, gamma, q)
-
         cos_phi = np.cos(phi_G)
         sin_phi = np.sin(phi_G)
 
@@ -159,7 +158,10 @@ class SPEMD_ext(object):
         return f_
 
     def derivatives(self, x, y, phi_E, gamma, e1, e2, e1_ext, e2_ext, center_x=0, center_y=0):
-        f_x_spemd, f_y_spemd = self.SPEMD.derivatives(x, y, phi_E, gamma, e1, e2, center_x, center_y)
+        if phi_E == 0:
+            f_x_spemd, f_y_spemd = 0, 0
+        else:
+            f_x_spemd, f_y_spemd = self.SPEMD.derivatives(x, y, phi_E, gamma, e1, e2, center_x, center_y)
         f_x_shear, f_y_shear = self.ext_shear.derivatives(x, y, e1_ext, e2_ext)
         f_x = f_x_spemd + f_x_shear
         f_y = f_y_spemd + f_y_shear
